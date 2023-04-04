@@ -19,8 +19,6 @@ public:
     Vector3f color;
     void draw(Image &img) override {
         // TODO: Implement Bresenham Algorithm
-        printf("Draw a line from (%d, %d) to (%d, %d) using color (%f, %f, %f)\n", xA, yA, xB, yB,
-                color.x(), color.y(), color.z());
         // RECOMMEND : Check the direction of canvas FIRST!!!
         // STEP -1 : HANDLE SPECIAL CASES
         if (xA == xB)
@@ -120,7 +118,7 @@ public:
             e = -dy;
             for(int i =0; i<=dy; i++)
             {
-                img.SetPixel(x, y, color);
+                img.SetPixel(-x, -y, color);
                 y = y+1, e += 2*dx;
                 if (e>=0)
                 {
@@ -194,9 +192,31 @@ public:
     int radius;
     Vector3f color;
     void draw(Image &img) override {
-        // TODO: Implement Algorithm to draw a Circle
-        printf("Draw a circle with center (%d, %d) and radius %d using color (%f, %f, %f)\n", cx, cy, radius,
-               color.x(), color.y(), color.z());
+        // TODO: Mid-point Algorithm
+        float d;
+        int x = 0, y = radius; int e = 5-4*radius;
+        // 8-way symmetry
+        while (x <= y)
+        {
+            img.SetPixel(cx + x, cy + y, color);
+            img.SetPixel(cx + x, cy - y, color);
+            img.SetPixel(cx - x, cy + y, color);
+            img.SetPixel(cx - x, cy - y, color);
+            img.SetPixel(cx + y, cy + x, color);
+            img.SetPixel(cx + y, cy - x, color);
+            img.SetPixel(cx - y, cy + x, color);
+            img.SetPixel(cx - y, cy - x, color);
+            if (e < 0)
+            {
+                e += 8 * x + 12;
+            }
+            else
+            {
+                e += 8 * (x - y) + 20;
+                y--;
+            }
+            x++;
+        }
     }
 };
 
