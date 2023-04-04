@@ -7,7 +7,7 @@
 // Simple image class
 class Image {
 
-public:
+public: 
 
     Image(int w, int h) {
         width = w;
