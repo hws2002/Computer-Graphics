@@ -91,58 +91,58 @@ public:
 
             break;
         case 1:
-            // dy = -dy;
-            // for(int i =0; i<=dx; i++)
-            // {
-            //     img.SetPixel(x, -y, color);
-            //     x = x+1, e += 2*dy;
-            //     if (e>=0)
-            //     {
-            //         y++, e-= 2*dx;
-            //     }
-            // }
+            dy = -dy;
+            for(int i =0; i<=dx; i++)
+            {
+                img.SetPixel(x, y, color);
+                x = x+1, e += 2*dy;
+                if (e>=0)
+                {
+                    y--, e-= 2*dx;
+                }
+            }
             break;
         case 2:
-            // k = 1/k;
-            // dy = -dy;
-            // e = -dy;
-            // for(int i =0; i<=dy; i++)
-            // {
-            //     img.SetPixel(x, -y, color);
-            //     y = y+1, e += 2*dx;
-            //     if (e>=0)
-            //     {
-            //         x++, e-= 2*dy;
-            //     }
-            // }
+            k = 1/k;
+            dy = -dy;
+            e = -dy;
+            for(int i =0; i<=dy; i++)
+            {
+                img.SetPixel(x, y, color);
+                y = y-1, e += 2*dx;
+                if (e>=0)
+                {
+                    x++, e-= 2*dy;
+                }
+            }
             break;
         case 3:
-            // k = 1/k;
-            // dx = -dx;
-            // dy = -dy;
-            // e = -dy;
-            // for(int i =0; i<=dy; i++)
-            // {
-            //     img.SetPixel(-x, -y, color);
-            //     y = y+1, e += 2*dx;
-            //     if (e>=0)
-            //     {
-            //         x++, e-= 2*dy;
-            //     }
-            // }
+            k = 1/k;
+            dx = -dx;
+            dy = -dy;
+            e = -dy;
+            for(int i =0; i<=dy; i++)
+            {
+                img.SetPixel(x, y, color);
+                y = y-1, e += 2*dx;
+                if (e>=0)
+                {
+                    x--, e-= 2*dy;
+                }
+            }
             break;  
         case 4:
-            // dx = -dx; dy = -dy;
-            // e = -dx;
-            // for(int i =0; i<=dx; i++)
-            // {
-            //     img.SetPixel(-x, -y, color);
-            //     x = x+1, e += 2*dy;
-            //     if (e>=0)
-            //     {
-            //         y++, e-= 2*dx;
-            //     }
-            // }
+            dx = -dx; dy = -dy;
+            e = -dx;
+            for(int i =0; i<=dx; i++)
+            {
+                img.SetPixel(x, y, color);
+                x = x-1, e += 2*dy;
+                if (e>=0)
+                {
+                    y--, e-= 2*dx;
+                }
+            }
             break;
         case 5:
             printf("---------------BEGIN CASE 5 LINE-----------------------\n");
@@ -161,18 +161,18 @@ public:
             printf("---------------END CASE 5 LINE-----------------------\n");
             break;  
         case 6:
-            // k = 1/k;
-            // dx = -dx;
-            // e = -dy;
-            // for(int i =0; i<=dy; i++)
-            // {
-            //     img.SetPixel(-x, y, color);
-            //     y = y+1, e += 2*dx;
-            //     if (e>=0)
-            //     {
-            //         x++, e-= 2*dy;
-            //     }
-            // }
+            k = 1/k;
+            dx = -dx;
+            e = -dy;
+            for(int i =0; i<=dy; i++)
+            {
+                img.SetPixel(x, y, color);
+                y = y+1, e += 2*dx;
+                if (e>=0)
+                {
+                    x--, e-= 2*dy;
+                }
+            }
             break;
         case 7:
             printf("---------------BEGIN CASE 7 LINE-----------------------\n");
@@ -181,7 +181,7 @@ public:
             for(int i =0; i<=dy; i++)
             {
                 img.SetPixel(x, y, color);
-                printf("filled (%d,%d) \n",x,y);
+                // printf("filled (%d,%d) \n",x,y);
                 y = y+1, e += 2*dx;
                 if (e>=0)
                 {
