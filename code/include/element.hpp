@@ -75,7 +75,6 @@ public:
         switch (CASE)
         {
         case 0:
-            printf("---------------BEGIN CASE 0 LINE-----------------------\n");
             for(int i =0; i<=dx; i++)
             {
                 img.SetPixel(x, y, color);
@@ -87,8 +86,6 @@ public:
                 }
                 //else do nothing!
             }
-            printf("---------------END CASE 0 LINE-----------------------\n");
-
             break;
         case 1:
             dy = -dy;
@@ -145,7 +142,6 @@ public:
             }
             break;
         case 5:
-            printf("---------------BEGIN CASE 5 LINE-----------------------\n");
             dx = -dx;
             e = -dx;
             for(int i =0; i<=dx; i++)
@@ -158,7 +154,6 @@ public:
                     y++, e-= 2*dx;
                 }
             }
-            printf("---------------END CASE 5 LINE-----------------------\n");
             break;  
         case 6:
             k = 1/k;
@@ -175,7 +170,6 @@ public:
             }
             break;
         case 7:
-            printf("---------------BEGIN CASE 7 LINE-----------------------\n");
             k = 1/k;
             e = -dy;
             for(int i =0; i<=dy; i++)
@@ -188,7 +182,6 @@ public:
                     x++, e-= 2*dy;
                 }
             }
-            printf("---------------BEGIN CASE 7 LINE-----------------------\n");
             break;
         default:
             break;
@@ -238,79 +231,84 @@ public:
     int cx, cy;
     Vector3f color;
     void draw(Image &img) override {
-        // TODO: Flood fill
-        // // TODO :SCANLINE FILL
-        // //STEP1 : initialization
-        // // set oldcolor
-        // Vector3f oldcolor = img.GetPixel(cx,cy);
-        // int xl,xr, i;
-        // bool spanNeedFill;
-        // std::tuple<int,int> seed(cx,cy);
-        // std::tuple<int,int> pt(cx,cy);
-        // std::stack< std::tuple<int,int> > Seeds;
-        // Seeds.push(seed);
-        // //STEP2 : FILL
-        // //STEP2_0 : FILL this scanline
-        // int x,y;
-        // while(!Seeds.empty())
-        // {
-        //     pt = Seeds.top();
-        //     Seeds.pop();
-        //     x = std::get<0>(pt);
-        //     y = std::get<1>(pt);
-        //     while(img.GetPixel(x,y) == oldcolor)
-        //     {// right side
-        //         img.SetPixel(x,y,color);
-        //         x++;
-        //     }
-        //     xr = x-1;
-        //     x = std::get<0>(pt) - 1;
-        //     while(img.GetPixel(x,y) == oldcolor)
-        //     {// left side
-        //         img.SetPixel(x,y,color);
-        //         x--;
-        //     }
-        //     xl = x+1;
-        //     //STEP2_1 : FILL UPPER scanline
-        //     x = xl;
-        //     y = y+1;
-        //     while(x <=xr)
-        //     {
-        //         spanNeedFill = false;
-        //         while(img.GetPixel(x,y) == oldcolor)
-        //         {
-        //             spanNeedFill = true;
-        //             x++;
-        //         }
-        //         if (spanNeedFill)
-        //         {
-        //             std::get<0>(pt) = x-1; 
-        //             std::get<1>(pt) = y;
-        //             Seeds.push(pt);
-        //             spanNeedFill = false;
-        //         }
-        //         while (img.GetPixel(x,y)!=oldcolor && x<=xr) x++;
-        //     }
-        //     //STEP2_2 : FILL LOWER scanline
-        //     x = xl;
-        //     y = y-2;
-        //     while(x<=xr)
-        //     {
-        //         spanNeedFill = false;
-        //         while(img.GetPixel(x,y) == oldcolor)
-        //         {
-        //             spanNeedFill = true;
-        //             x++;
-        //         }
-        //         if (spanNeedFill)
-        //         {
-        //             std::get<0>(pt) = x-1;
-        //             std::get<0>(pt) = y;
-        //             Seeds.push(pt);
-        //             spanNeedFill = false;
-        //         }
-        //         while(img.GetPixel(x,y)!=oldcolor && x<=xr) x++;
-        //     }
-        // }
+        // TODO: Flood fill 非递归版本
+        // 种子点 ： std::tuple<int,int> Seed(cx,cy);
+        //STEP1 : initialization
+        Vector3f oldcolor = img.GetPixel(cx,cy);
+        std::tuple<int,int> Seed(cx,cy);
+        std::stack< std::tuple<int,int> > Seeds;
+        Seeds.push(Seed);
+        //STEP2 : FILL
+        while(!Seeds.empty())
+        {
+            std::tuple<int,int> pt = Seeds.top(); Seeds.pop();
+            int x = std::get<0>(pt);
+            int y = std::get<1>(pt);
+            //STEP2_0 : FILL THIS SCANLINE
+            while(img.GetPixel(x,y) == oldcolor && 0<=x && x< img.Width())
+            {//right side
+                img.SetPixel(x,y,color);
+                x++;
+            }
+            int xr = x-1;
+            x = std::get<0>(pt)-1;
+            while(img.GetPixel(x,y) == oldcolor && 0<=x && x< img.Width())
+            {// left side
+                img.SetPixel(x,y,color);
+                x--;
+            }
+            int xl = x+1;
+            //STEP2_1 : FILL UPPER SCANLINE
+            x = xl;
+            y += 1;
+            if (0<=y && y<img.Height()){
+                while( x <= xr)
+                {
+                    bool needFill = false;
+                    while(img.GetPixel(x,y) == oldcolor)
+                    {
+                        needFill = true;
+                        x++;
+                    }
+                    if(needFill)
+                    {
+                        std::get<0>(Seed) = x-1;
+                        std::get<1>(Seed) = y;
+                        Seeds.push(Seed);
+                        needFill = false; // 没必要？
+                    } else {
+                        //do nothing!
+                    }
+                    while(img.GetPixel(x,y)!= oldcolor && x <=xr) x++;
+                }
+            } else{
+                //do nothing!
+            }
+
+            //STEP2_2 : FILL LOWER SCANLINE
+            x = xl;
+            y -= 2;
+            if(0<=y && y<img.Height()){
+                while(x<=xr)
+                {
+                    bool needFill = false;
+                    while(img.GetPixel(x,y) == oldcolor)
+                    {
+                        needFill = true;
+                        x++;
+                    }
+                    if (needFill)
+                    {
+                        std::get<0>(Seed) = x-1;
+                        std::get<1>(Seed) = y;
+                        Seeds.push(Seed);
+                        needFill = false; // 没必要？
+                    }
+                    while(img.GetPixel(x,y)!= oldcolor && x <=xr) x++;
+                }
+            } else {
+                //do nothing!
+            }
+        }
     }
 };
