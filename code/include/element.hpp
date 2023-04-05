@@ -265,7 +265,7 @@ public:
                 while( x <= xr)
                 {
                     bool needFill = false;
-                    while(img.GetPixel(x,y) == oldcolor)
+                    while(img.GetPixel(x,y) == oldcolor && x < img.Width())
                     {
                         needFill = true;
                         x++;
@@ -275,7 +275,7 @@ public:
                         std::get<0>(Seed) = x-1;
                         std::get<1>(Seed) = y;
                         Seeds.push(Seed);
-                        needFill = false; // 没必要？
+                        // needFill = false; // 没必要？
                     } else {
                         //do nothing!
                     }
@@ -292,7 +292,7 @@ public:
                 while(x<=xr)
                 {
                     bool needFill = false;
-                    while(img.GetPixel(x,y) == oldcolor)
+                    while(img.GetPixel(x,y) == oldcolor && x < img.Width())
                     {
                         needFill = true;
                         x++;
@@ -302,7 +302,7 @@ public:
                         std::get<0>(Seed) = x-1;
                         std::get<1>(Seed) = y;
                         Seeds.push(Seed);
-                        needFill = false; // 没必要？
+                        // needFill = false; // 没必要？
                     }
                     while(img.GetPixel(x,y)!= oldcolor && x <=xr) x++;
                 }
