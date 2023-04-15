@@ -47,13 +47,13 @@ int main(int argc, char *argv[]) {
                 Vector3f finalColor = Vector3f::ZERO;
                 for (int i = 0; i < sceneparser.getNumLights(); i++) {
                     Light *light = sceneparser.getLight(i);
-                    Vector3f lightDir = light->getDirection(hit.getIntersectionPoint());
-                    Vector3f lightColor = light->getColor();
-                    Vector3f normal = hit.getNormal();
-                    Vector3f lightIntensity = lightColor * max(0.0f, Vector3f::dot(normal, lightDir));
-                    finalColor += lightIntensity;
+                    Vector3f L, lightColor;
+                    // 获得光照强度
+                    light->getIllumination(camRay.pointAtParameter(hit.getT()),L,lightColor);
+                    // 计算局部光强
+                    finalColor += hit.getMaterial()->Shade(camRay, hit, L, lightColor);
                 }
-                cout << "hit" << endl;
+                image.SetPixel(x,y,finalColor);
             } else {
                 // no hit
                 image.SetPixel(x,y,sceneparser.getBackgroundColor());
