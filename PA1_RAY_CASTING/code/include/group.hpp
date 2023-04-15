@@ -27,7 +27,7 @@ public:
     }
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-
+        
     }
 
     void addObject(int index, Object3D *obj) {
@@ -42,5 +42,5 @@ private:
 
 };
 
-#endif
+#endif //GROUP_H
 	
