@@ -41,15 +41,16 @@ int main(int argc, char *argv[]) {
             Ray camRay = camera->generateRay(Vector2f(x, y));
             Group * baseGroup = sceneparser.getGroup();
             Hit hit;
-            bool isIntersect = baseGroup->intersect(camRay, hit, 0);
+            bool isIntersect = baseGroup->intersect(camRay, hit, 0); 
             if (isIntersect) {// hit
-                //TODO: calculate the color
+                //TODO: calculate the color - PHONG Model
                 Vector3f finalColor = Vector3f::ZERO;
                 for (int i = 0; i < sceneparser.getNumLights(); i++) {
                     Light *light = sceneparser.getLight(i);
                     Vector3f L, lightColor;
                     // 获得光照强度
                     light->getIllumination(camRay.pointAtParameter(hit.getT()),L,lightColor);
+                    /* lightColor = input中光源颜色 */
                     // 计算局部光强
                     finalColor += hit.getMaterial()->Shade(camRay, hit, L, lightColor);
                 }
@@ -60,6 +61,8 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    // Finally, save the final image using the Image::SaveImage() method.
+    image.SaveBMP(outputFile.c_str());
     cout << "--------------------------------------Hello! Computer Graphics!---------------------------------------" << endl;
     return 0;
 }

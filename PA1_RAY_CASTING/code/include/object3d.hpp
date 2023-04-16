@@ -22,6 +22,5 @@ protected:
 
     Material *material;
 };
-
 #endif
 

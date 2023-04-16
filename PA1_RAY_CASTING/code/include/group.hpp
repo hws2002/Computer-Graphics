@@ -30,15 +30,8 @@ public:
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
         bool intersected = false;
-        float closest_so_far = tmin;
-        for (auto object : objects) {
-            Hit hit;
-            if (object->intersect(r, hit, closest_so_far)) {
-                intersected = true;
-                closest_so_far = hit.getT();
-                h.set(closest_so_far, hit.getMaterial(), hit.getNormal());
-            }
-        }
+        for (auto obj : objects)
+            intersected |= obj->intersect(r, h, tmin);
         return intersected;
     }
 

@@ -15,7 +15,10 @@ public:
 
     // a b c are three vertex positions of the triangle
 	Triangle( const Vector3f& a, const Vector3f& b, const Vector3f& c, Material* m) : Object3D(m) {
-
+		this->vertices[0] = a;
+		this->vertices[1] = b;
+		this->vertices[2] = c;
+		this->normal = Vector3f::cross(b - a, c - a).normalized();
 	}
 
 	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
@@ -24,7 +27,7 @@ public:
 	Vector3f normal;
 	Vector3f vertices[3];
 protected:
-
+	// Vector3f a, b, c;
 };
 
 #endif //TRIANGLE_H

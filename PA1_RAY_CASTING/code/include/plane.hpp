@@ -16,18 +16,20 @@ public:
     }
 
     Plane(const Vector3f &normal, float d, Material *m) : Object3D(m) {
-
+        this->normal = normal;
+        this->d = d;
     }
 
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
+        //TODO : 
         return false;
     }
 
 protected:
-
-
+    Vector3f normal;
+    float d;
 };
 
 #endif //PLANE_H
