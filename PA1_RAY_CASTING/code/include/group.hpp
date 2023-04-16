@@ -29,9 +29,9 @@ public:
     }
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-        bool intersected = false;
+        bool intersected = false; // tmin is 0
         for (auto obj : objects)
-            intersected |= obj->intersect(r, h, tmin);
+            intersected |= obj->intersect(r, h, tmin); // tmin remains same always
         return intersected;
     }
 

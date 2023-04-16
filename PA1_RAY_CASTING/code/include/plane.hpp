@@ -24,6 +24,18 @@ public:
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
         //TODO : 
+        Vector3f P_o = r.getOrigin();
+        Vector3f P_dir = r.getDirection();
+
+
+        // 平行
+        float cos = Vector3f::dot(normal, P_dir);
+        if (fabs(cos) < 1e-6) return false;
+
+        float t = (d - Vector3f::dot(normal, P_o)) / Vector3f::dot(normal, P_dir);
+        if (t < tmin || t > h.getT()) return false;
+        h.set(t, material, normal);
+        return true;
         return false;
     }
 

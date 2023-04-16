@@ -56,7 +56,7 @@ public:
         Vector3f rayDirOnCamera = Vector3f(Camera_x, Camera_y, fy).normalized(); // direction of ray in Camera space
         Matrix3f world2camera(horizontal,up,direction);
 
-        Vector3f rayDir = world2camera.inverse() * rayDirOnCamera; // direction of ray in world space
+        Vector3f rayDir = (world2camera.inverse() * rayDirOnCamera).normalized(); // direction of ray in world space
         Vector3f rayOrigin = center; // Origin in world space , (0,0,10) for e.g
         return Ray(rayOrigin,rayDir);
     }
