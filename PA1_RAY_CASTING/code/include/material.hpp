@@ -14,7 +14,7 @@ public:
 
     explicit Material(const Vector3f &d_color, const Vector3f &s_color = Vector3f::ZERO, float s = 0) :
             diffuseColor(d_color), specularColor(s_color), shininess(s) {
-
+        
     }
 
     virtual ~Material() = default;
@@ -28,6 +28,14 @@ public:
                    const Vector3f &dirToLight, const Vector3f &lightColor) {
         Vector3f shaded = Vector3f::ZERO;
         // 
+        Vector3f N = hit.getNormal().normalized();
+        Vector3f intersection = ray.pointAtParameter(hit.getT());
+        Vector3f L = dirToLight.normalized();
+        Vector3f V = -ray.getDirection().normalized();
+        Vector3f R = (2 * Vector3f::dot(L, N) * N - L).normalized();
+        shaded = lightColor * 
+                (diffuseColor * clamp(Vector3f::dot(L, N)) +
+                 specularColor * pow(clamp(Vector3f::dot(R, V)), shininess));
         return shaded;
     }
 
@@ -35,6 +43,7 @@ protected:
     Vector3f diffuseColor;
     Vector3f specularColor;
     float shininess;
+    float clamp(float x) { return std::max((float)0, x); }
 };
 
 
