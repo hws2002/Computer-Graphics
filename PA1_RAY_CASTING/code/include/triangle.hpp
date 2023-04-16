@@ -22,12 +22,30 @@ public:
 	}
 
 	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
+		//TODO: 
+        Vector3f o(ray.getOrigin()), dir(ray.getDirection());
+        // dir.normalize();
+        float cos = Vector3f::dot(normal, dir);
+        // 平行
+        if (fabs(cos)<1e-6) return false;
+        // d = n.o + t*n.dir => t = (d-n.o)/(n.dir)
+        float d = Vector3f::dot(normal, vertices[0]);
+        float t = (d - Vector3f::dot(normal, o)) / Vector3f::dot(normal, dir);
+        if (t < tmin || t > hit.getT()) return false;
+        Vector3f p(o + dir * t);
+        if (!inTriangle(p)) return false;
+        hit.set(t, material, normal);
+        return true;
         return false;
 	}
 	Vector3f normal;
 	Vector3f vertices[3];
 protected:
-	// Vector3f a, b, c;
+    bool inTriangle(const Vector3f& p) {
+        return Vector3f::dot(Vector3f::cross((vertices[1] - p), (vertices[2] - p)), normal) >= -1e-6 &&
+               Vector3f::dot(Vector3f::cross((vertices[2] - p), (vertices[0] - p)), normal) >= -1e-6 &&
+               Vector3f::dot(Vector3f::cross((vertices[0] - p), (vertices[1] - p)), normal) >= -1e-6;
+    }
 };
 
 #endif //TRIANGLE_H
