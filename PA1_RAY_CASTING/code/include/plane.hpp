@@ -25,7 +25,7 @@ public:
     bool intersect(const Ray &r, Hit &h, float tmin) override {
         //TODO : 
         Vector3f P_o = r.getOrigin();
-        Vector3f P_dir = r.getDirection();
+        Vector3f P_dir = r.getDirection().normalized();
 
 
         // 平行

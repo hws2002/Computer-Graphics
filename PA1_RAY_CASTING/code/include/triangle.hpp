@@ -23,28 +23,30 @@ public:
 
 	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
 		//TODO: 
-        Vector3f o(ray.getOrigin()), dir(ray.getDirection());
-        // dir.normalize();
-        float cos = Vector3f::dot(normal, dir);
-        // 平行
+        Vector3f rayOrigin = ray.getOrigin();
+		Vector3f rayDir = ray.getDirection().normalized();
+
+        // 特殊情况 ： 平行
+        float cos = Vector3f::dot(normal, rayDir);
         if (fabs(cos)<1e-6) return false;
-        // d = n.o + t*n.dir => t = (d-n.o)/(n.dir)
-        float d = Vector3f::dot(normal, vertices[0]);
-        float t = (d - Vector3f::dot(normal, o)) / Vector3f::dot(normal, dir);
+        // Check if the ray intersects the plane
+        float D = Vector3f::dot(normal, vertices[0]);
+        float t = (D - Vector3f::dot(normal, rayOrigin)) / Vector3f::dot(normal, rayDir);
         if (t < tmin || t > hit.getT()) return false;
-        Vector3f p(o + dir * t);
+
+		// Check if the intersection point is inside the triangle
+        Vector3f p(rayOrigin + rayDir * t);
         if (!inTriangle(p)) return false;
         hit.set(t, material, normal);
         return true;
-        return false;
 	}
 	Vector3f normal;
 	Vector3f vertices[3];
 protected:
     bool inTriangle(const Vector3f& p) {
-        return Vector3f::dot(Vector3f::cross((vertices[1] - p), (vertices[2] - p)), normal) >= -1e-6 &&
-               Vector3f::dot(Vector3f::cross((vertices[2] - p), (vertices[0] - p)), normal) >= -1e-6 &&
-               Vector3f::dot(Vector3f::cross((vertices[0] - p), (vertices[1] - p)), normal) >= -1e-6;
+        return Vector3f::dot(Vector3f::cross((vertices[0] - p), (vertices[1] - p)), normal) >= -1e-6 &&
+               Vector3f::dot(Vector3f::cross((vertices[1] - p), (vertices[2] - p)), normal) >= -1e-6 &&
+               Vector3f::dot(Vector3f::cross((vertices[2] - p), (vertices[0] - p)), normal) >= -1e-6;
     }
 };
 
