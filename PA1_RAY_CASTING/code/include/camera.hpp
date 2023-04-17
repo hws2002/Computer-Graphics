@@ -42,23 +42,23 @@ class PerspectiveCamera : public Camera {
 
 public:
     PerspectiveCamera(const Vector3f &center, const Vector3f &direction,
-            const Vector3f &up, int imgW, int imgH, float angle) : Camera(center, direction, up, imgW, imgH) {
+            const Vector3f &up, int imgW, int imgH, float angle) : Camera(center, direction, up, imgW, imgH),
+            angle(angle) {
         // angle is in radian. (input is degree, converted to radian in scene_parser.cpp)
-        this->angle = angle;
-        this->aspect = (float)width / (float)height; 
-        this->fx = imgW / (2.0f*(aspect * tan(angle / 2.0f)));
-        this->fy = imgH / ((2.0f*tan(angle / 2.0f)));
+        this->aspect = (float)imgW / (float)imgH; 
+        this->fx = (float) imgW / (2.0f*(aspect * tan(angle / 2.0f)));
+        this->fy = (float) imgH / ((2.0f*tan(angle / 2.0f)));
     }
 
     Ray generateRay(const Vector2f &point) override {
-        float Camera_x = (point.x() - width / 2.0f) * fx;
-        float Camera_y = (point.y() - height / 2.0f) * fy;
+        float Camera_x = (point.x() - width / 2.0f);
+        float Camera_y = (point.y() - height / 2.0f);
         Vector3f rayDirOnCamera = Vector3f(Camera_x, Camera_y, fy).normalized(); // direction of ray in Camera space
         Matrix3f world2camera(horizontal,up,direction);
 
-        Vector3f rayDir = (world2camera.inverse() * rayDirOnCamera).normalized(); // direction of ray in world space
+        // Vector3f rayDir = (world2camera.inverse() * rayDirOnCamera).normalized(); // direction of ray in world space
         Vector3f rayOrigin = center; // Origin in world space , (0,0,10) for e.g
-        return Ray(rayOrigin,rayDir);
+        return Ray(rayOrigin,world2camera*rayDirOnCamera);
     }
 
 private:
