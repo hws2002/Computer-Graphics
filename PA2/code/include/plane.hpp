@@ -14,13 +14,25 @@ public:
     }
 
     Plane(const Vector3f &normal, float d, Material *m) : Object3D(m) {
-
+        this->norm = normal;
+        this->d = d;
     }
 
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-        return false;
+        Vector3f P_o = r.getOrigin();
+        Vector3f P_dir = r.getDirection().normalized();
+
+
+        // 平行
+        float cos = Vector3f::dot(norm, P_dir);
+        if (fabs(cos) < 1e-6) return false;
+
+        float t = (d - Vector3f::dot(norm, P_o)) / Vector3f::dot(norm, P_dir);
+        if (t < tmin || t > h.getT()) return false;
+        h.set(t, material, norm);
+        return true;
     }
 
     void drawGL() override {

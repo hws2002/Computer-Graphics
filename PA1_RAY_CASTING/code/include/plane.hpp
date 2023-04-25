@@ -23,7 +23,6 @@ public:
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-        //TODO : 
         Vector3f P_o = r.getOrigin();
         Vector3f P_dir = r.getDirection().normalized();
 
@@ -36,7 +35,6 @@ public:
         if (t < tmin || t > h.getT()) return false;
         h.set(t, material, normal);
         return true;
-        return false;
     }
 
 protected:

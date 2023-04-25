@@ -22,7 +22,6 @@ public:
 	}
 
 	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
-		//TODO: 
         Vector3f rayOrigin = ray.getOrigin();
 		Vector3f rayDir = ray.getDirection().normalized();
 
