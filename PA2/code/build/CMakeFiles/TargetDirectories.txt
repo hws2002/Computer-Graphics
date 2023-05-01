@@ -1,6 +1,0 @@
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/CMakeFiles/PA2.dir
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/CMakeFiles/edit_cache.dir
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/CMakeFiles/rebuild_cache.dir
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/deps/vecmath/CMakeFiles/vecmath.dir
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/deps/vecmath/CMakeFiles/edit_cache.dir
-/Users/wooseokhan/Desktop/Computer-Graphics/PA2/code/build/deps/vecmath/CMakeFiles/rebuild_cache.dir
