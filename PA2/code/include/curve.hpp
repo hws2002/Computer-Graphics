@@ -101,14 +101,14 @@ class BezierCurve : public Curve {
             std::vector<double> Bernsteins(NCP,0);
             std::vector<double> DBernsteins(NCP,0);
             for(int j=0; j<=NCP-1;j++){
-                Bernsteins[j] = get_Bernstein(j,step);
+                Bernsteins[j] = get_Bernstein(j,NCP-1,step);
                 #ifdef DEBUG
                 std::cout<<"Bernsteins["<<j<<"] is "<<Bernsteins[j]<<std::endl;
                 #endif
             } 
             // Calculate the Derivatives
             for(int j=0; j<=NCP-1;j++){
-                // DBernsteins[j] = ;
+                DBernsteins[j] = get_DBernsteins(j,NCP-1,step);
             }
             // ∑
             for(int j=0; j<=NCP-1;j++){
@@ -118,9 +118,13 @@ class BezierCurve : public Curve {
         }
     }
 protected:
-    double get_Bernstein(int i, double t){
-        int n = NCP-1;
+    double get_Bernstein(int i,int n, double t){
         return C(n,i) * pow(t,i) * pow(1-t,n-i);
+    }
+    double get_DBernsteins(int i, int n,double t){
+        if(i==0) return -1*(double)n*pow(1-t,n-1);
+        if(i==n) return (double)n*pow(t,n-1);
+        return (double)n*(get_Bernstein(i-1,n-1,t) - get_Bernstein(i,n-1,t));
     }
 
     double C(int n,int i){
