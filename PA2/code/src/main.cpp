@@ -28,7 +28,7 @@ void screenCapture() {
     Image openglImg(imgW, imgH);
     auto *pixels = new unsigned char[3 * imgW * imgH];
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadBuffer(GL_BACK);
+    glReadBuffer(GL_FRONT);
     glReadPixels(0, 0, imgW, imgH, GL_RGB, GL_UNSIGNED_BYTE, pixels);
     for (int x = 0; x < imgW; ++x) {
         for (int y = 0; y < imgH; ++y) {

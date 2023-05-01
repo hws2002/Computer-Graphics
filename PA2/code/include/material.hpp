@@ -38,7 +38,6 @@ public:
                 (diffuseColor * clamp(Vector3f::dot(L, N)) +
                  specularColor * pow(clamp(Vector3f::dot(R, V)), shininess));
         return shaded;
-        return shaded;
     }
 
     // For OpenGL, this is fully implemented
