@@ -108,7 +108,7 @@ class BezierCurve : public Curve {
             } 
             // Calculate the Derivatives
             for(int j=0; j<=NCP-1;j++){
-                DBernsteins[j] = get_DBernsteins(j,NCP-1,step);
+                DBernsteins[j] = get_DBernstein(j,NCP-1,step);
             }
             // ∑
             for(int j=0; j<=NCP-1;j++){
@@ -121,7 +121,7 @@ protected:
     double get_Bernstein(int i,int n, double t){
         return C(n,i) * pow(t,i) * pow(1-t,n-i);
     }
-    double get_DBernsteins(int i, int n,double t){
+    double get_DBernstein(int i, int n,double t){
         if(i==0) return -1*(double)n*pow(1-t,n-1);
         if(i==n) return (double)n*pow(t,n-1);
         return (double)n*(get_Bernstein(i-1,n-1,t) - get_Bernstein(i,n-1,t));
@@ -199,6 +199,7 @@ public:
             #endif
             for(int j=0;j<resolution;j++){
                 data[(i-degree)*resolution + j].V = Vector3f::ZERO;
+                data[(i-degree)*resolution + j].T = Vector3f::ZERO;
                 // Calculate t
                 double step = (Knots[i+1] - Knots[i]) * ((double)j/(resolution)) + Knots[i];
 
@@ -209,9 +210,10 @@ public:
                 // Dynamic programming, get Bernsteins
                 //  - for t in t_i to t_{i+1}, Bernsteins are only determined by the B_i,0
                 std::vector<double> Bernsteins(degree+1,0);
+                std::vector<double> DBernsteins(degree+1,0);
                 for(int l = 0; l < Bernsteins.size();l++){
                     Bernsteins[l] = get_Bernstein(Valid[l],degree,step);
-
+                    DBernsteins[l] = get_DBernstein(Valid[l],degree,step);
                     //debug
                     #ifdef DEBUG
                         std::cout<<"Params are  "<<Valid[l]<<" "<<degree<<" "<<step<<endl;
@@ -228,7 +230,7 @@ public:
                 #endif
                 for (int l = 0; l < Bernsteins.size(); ++l) {
                     data[(i-degree)*resolution + j].V += controls[Valid[l]] * Bernsteins[l];
-                    // data[i].T += controls[-lsk + j] * ds[j];
+                    data[(i-degree)*resolution + j].T += controls[Valid[l]] * DBernsteins[l];
                 }
 
                 //debug
@@ -252,6 +254,9 @@ protected:
             double b = (Knots[i+p+1] - t)/(Knots[i+p+1] - Knots[i+1]);
             return a*get_Bernstein(i,p-1,t) + b*get_Bernstein(i+1,p-1,t);
         }
+    }
+    double get_DBernstein(int i, int p, double t){
+        return (double) p * (get_Bernstein(i,p-1,t)/(Knots[i+p] - Knots[i]) - get_Bernstein(i+1,p-1,t)/(Knots[i+p+1] - Knots[i+1]));
     }
 };
 
