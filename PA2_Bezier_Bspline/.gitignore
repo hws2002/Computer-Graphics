@@ -1,2 +1,4 @@
 code/output/
 code/build/
+images/
+.DS_Store
