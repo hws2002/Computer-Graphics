@@ -1,0 +1,6 @@
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/CMakeFiles/PA1.dir
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/CMakeFiles/edit_cache.dir
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/CMakeFiles/rebuild_cache.dir
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/deps/vecmath/CMakeFiles/vecmath.dir
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/deps/vecmath/CMakeFiles/edit_cache.dir
+/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code/build/deps/vecmath/CMakeFiles/rebuild_cache.dir
