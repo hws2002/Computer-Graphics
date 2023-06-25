@@ -66,6 +66,9 @@
         "algorithm": "cpp",
         "fstream": "cpp",
         "iomanip": "cpp",
-        "stack": "cpp"
-    }
+        "stack": "cpp",
+        "random": "cpp",
+        "__availability": "cpp"
+    },
+    "cmake.sourceDirectory": "/Users/wooseokhan/Desktop/Computer-Graphics/RAY_TRACING/code"
 }
